@@ -20,28 +20,56 @@ function straight(target, position){
   return normalize(sub(target, position));
 }
 
-function seek(target, position, mass, max_velocity){
+function seek(target, position, current_velocity, max_velocity, slowing_radius){
+  //make clones of inputs to not mutate originals
   var target = target.slice(),
-      position = position.slice();
+      position = position.slice(),
+      current_velocity = current_velocity.slice();
   
-  var velocity = straight(target, position);
-  velocity = mult(velocity, max_velocity);
-  velocity = mult(velocity, (1 / mass));
-  velocity = truncate(velocity, max_velocity);
-  return velocity;
+  desired = sub(target, position);
+  
+  distance = mag(desired);
+  desired = normalize(desired);
+  
+  if (distance <= slowing_radius) {
+    desired = mult(desired, (max_velocity * distance/slowing_radius));
+  } else {
+    desired = mult(desired, max_velocity);
+  }
+  
+  force = sub(desired, current_velocity);
+  
+  return force;
 };
 
-console.log(seek);
+function flee(target, position, current_velocity, max_velocity){
+  var target = target.slice(),
+      position = position.slice();
+
+  desired = sub(position, target);
+  desired = normalize(desired);
+  desired = mult(desired, max_velocity);
+  
+  force = sub(desired, current_velocity);
+  
+  return force;
+}
+
+module.exports = {
+  straight: straight,
+  seek: seek,
+  flee: flee
+};
 
 var start = [0,0];
-var end = [200, 500];
+var end = [500, 200];
 setInterval(function(){
-  var s = seek(end, start, 10, 20);
+  var s = seek(end, start, [0,0], 20, 10);
   var ns = add(start, s);
   debugger;
   console.log(start);
   start = ns;
-}, 1000);
+}, 0);
 
 
 
