@@ -1,6 +1,6 @@
 {
   "name": "steering",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "2D vector based steering behaviors",
   "main": "index.js",
   "scripts": {
