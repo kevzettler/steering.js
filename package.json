@@ -1,6 +1,6 @@
 {
   "name": "steering",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "2D vector based steering behaviors. Based on Craig Reynolds' Steering Behaviors For Autonomous Characters",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "game",
     "pathfinding",
     "steering",
-    "2D movement"
+    "2D movement",
+    "AI"
   ],
   "author": "kevzettler",
   "license": "MIT",
