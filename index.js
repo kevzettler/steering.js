@@ -27,7 +27,6 @@ function seek(target, position, current_velocity, max_velocity, slowing_radius){
       current_velocity = current_velocity.slice();
   
   desired = sub(target, position);
-  
   distance = mag(desired);
   desired = normalize(desired);
   
@@ -57,13 +56,13 @@ function flee(target, position, current_velocity, max_velocity){
 }
 
 function setAngle(vector, value){
-  var mag = mag(vector);
-  vector[0] = Math.cos(value) * mag;
-  vector[1] = Math.sin(value) * mag;
+  var magn = mag(vector);
+  vector[0] = Math.cos(value) * magn;
+  vector[1] = Math.sin(value) * magn;
 }
 
 function wander(current_velocity, wander_distance, wander_radius, wander_angle, angle_change){
-  var current_velocity = current_velocity.split();
+  var current_velocity = current_velocity.slice();
   
   var circleCenter = mult(normalize(current_velocity), wander_distance);
   
@@ -106,10 +105,11 @@ function pursuit(target, position, max_velocity, current_velocity, target_veloci
   return seek(targetFuturePosition, position, current_velocity, max_velocity, 0);
 }
 
-function avoidance(target, position, current_velocity, max_avoid_ahead, max_velocity, avoidance_force){
+function avoidance(target, position, velocity,
+                   max_avoid_ahead, max_velocity, avoidance_force){
   var target = target.slice(),
       position = position.slice(),
-      current_velocity = current_velocity.slice();
+      velocity = velocity.slice();
   var tv  = velocity.slice();
   tv = normalize(tv);
   tv = mult(tv, (max_avoid_ahead * mag(velocity)) / max_velocity);
