@@ -31,9 +31,9 @@ function seek(target, position, current_velocity, max_velocity, slowing_radius){
   desired = normalize(desired);
   
   if (distance <= slowing_radius) {
-    desired = mult(desired, (max_velocity * distance/slowing_radius));
+    mult(desired, (max_velocity * (distance/slowing_radius)));
   } else {
-    desired = mult(desired, max_velocity);
+    mult(desired, max_velocity);
   }
   
   force = sub(desired, current_velocity);
@@ -56,22 +56,26 @@ function flee(target, position, current_velocity, max_velocity){
 }
 
 function setAngle(vector, value){
-  var magn = mag(vector);
-  vector[0] = Math.cos(value) * magn;
-  vector[1] = Math.sin(value) * magn;
+  var len = mag(vector);
+  vector[0] = Math.cos(value) * len;
+  vector[1] = Math.sin(value) * len;
 }
 
 function wander(current_velocity, wander_distance, wander_radius, wander_angle, angle_change){
   var current_velocity = current_velocity.slice();
   
-  var circleCenter = mult(normalize(current_velocity), wander_distance);
-  
-  displacement = mult([0, -1], wander_radius);
+  var circleCenter = current_velocity;
+  circleCenter = normalize(circleCenter);
+  mult(circleCenter, wander_distance);
+
+  var displacement = [0, -1];
+  mult(displacement, wander_radius);
 
   setAngle(displacement, wander_angle);
-  wander_angle += Math.random() * angle_change - angle_change * .5;
+  //  wander_angle += Math.random() * angle_change - angle_change * .5;
+  // TODO this needs mutate and persist outside function scope;
 
-  wanderForce = add(circleCenter,displacement);
+  wanderForce = add(circleCenter, displacement);
   return wanderForce;
 }
 
